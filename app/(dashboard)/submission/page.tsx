@@ -577,86 +577,86 @@ const TasksPageContent = () => {
     }
 
     return (
-        <div className="text-white">
-            {showReview ? (
-                <SubmissionReview 
-                    isMentor={ismentor}
-                    taskId={selectedTaskId}
-                    menteeId={selectedMenteeId}
-                    onClose={handleCloseReview}
-                    trackId={currentTrack?.id}
-                    allSubmissions={mySubmissions}
-                    tasks={tasks}
-                />
-            ) : (
-                <>
-                    {userRole === 'Mentee' && currentTrack && (
-                        <div className="text-center mb-4">
-                            <div className="text-yellow-400 text-lg">
-                                Current Track: {currentTrack.name}
+    <div className="text-white  min-h-screen pt-10">
+        {showReview ? (
+            <SubmissionReview 
+                isMentor={ismentor}
+                taskId={selectedTaskId}
+                menteeId={selectedMenteeId}
+                onClose={handleCloseReview}
+                trackId={currentTrack?.id}
+                allSubmissions={mySubmissions}
+                tasks={tasks}
+            />
+        ) : (
+            <div className="max-w-full mx-auto px-6 md:px-12">
+                {/* Header Section */}
+                <div className="flex flex-col items-center mb-10 text-center">
+                    {ismentor && selectedMentee ? (
+                        <>
+                            <h2 className="text-xs md:text-sm uppercase tracking-[0.4em] text-gray-500 font-bold mb-2">
+                                Viewing submissions for
+                            </h2>
+                            <h1 className="text-2xl md:text-4xl text-white font-black tracking-tight mb-4">
+                                {selectedMentee}
+                            </h1>
+                            <div className="flex items-center gap-3">
+                                <span className="bg-[#FFC107]/10 text-[#FFC107] text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-widest border border-[#FFC107]/20">
+                                    {currentTrack?.name || "N/A"}
+                                </span>
+                                <button 
+                                    onClick={() => router.push('/dashboard')}
+                                    className="text-[10px] uppercase tracking-[0.2em] text-gray-600 hover:text-white transition-all border-b border-gray-800 hover:border-white pb-0.5"
+                                >
+                                    Change Mentee
+                                </button>
                             </div>
+                        </>
+                    ) : (
+                        <>
+                            <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-white mb-4">
+                                {currentTrack?.name}
+                            </h2>
                             <button 
                                 onClick={handleChangeTrack}
-                                className="text-sm text-gray-400 hover:text-yellow-400 underline"
+                                className="text-[10px] uppercase tracking-[0.2em] text-gray-500 hover:text-white transition-all border-b border-gray-800 hover:border-white pb-0.5"
                             >
-                                Change Track
+                                Switch Track
                             </button>
-                        </div>
+                        </>
                     )}
+                </div>
 
-                    {ismentor && selectedMentee && (
-                        <div className="text-center mb-4">
-                            <div className="text-yellow-400 text-lg">
-                                Viewing submissions for: {selectedMentee}
-                            </div>
-                            {currentTrack && (
-                                <div className="text-gray-400 text-sm">
-                                    Track: {currentTrack.name}
-                                </div>
-                            )}
-                            <button 
-                                onClick={() => router.push('/dashboard')}
-                                className="text-sm text-gray-400 hover:text-yellow-400 underline"
-                            >
-                                Change Mentee/Track
-                            </button>
-                        </div>
-                    )}
+                {/* Filter Tabs - Redesigned to be sleeker */}
+                <div className="bg-[#141414] border border-white/5 p-1.5 rounded-2xl w-full max-w-lg mx-auto mb-12 flex justify-between shadow-xl">
+                {["All Tasks", ismentor ? "Reviewed" : "Submitted", ismentor ? "Submitted" : "Reviewed"].map((label, i) => (
+                    <button 
+                    key={i} 
+                    className={`flex-1 py-2.5 px-4 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-500 ease-out
+                    ${toggles[i] 
+                    ? "bg-[#FFC107] text-black shadow-[0_10px_20px_rgba(255,193,7,0.3)] scale-[1.05] z-10" 
+                    : "text-gray-500 hover:text-white hover:bg-white/5 hover:scale-[1.02]"}`} 
+                    onClick={() => toggleState(i)}>
+                        {label}
+                    </button>
+                    ))}
+                </div>
 
-                    <div className="bg-deeper-grey rounded-full w-[90%] sm:w-[70%] md:w-[50%] flex justify-between m-auto mt-5">
-                        <button 
-                            className={`rounded-full w-1/3 py-2 text-sm sm:text-lg md:text-xl lg:text-2xl transition-colors ${toggles[0] ? "bg-primary-yellow text-black" : "bg-deeper-grey"}`} 
-                            onClick={() => toggleState(0)}
-                        >
-                            All Tasks
-                        </button>
-                        <button 
-                            className={`rounded-full w-1/3 py-2 text-sm sm:text-lg md:text-xl lg:text-2xl transition-colors ${toggles[1] ? "bg-primary-yellow text-black" : "bg-deeper-grey"}`} 
-                            onClick={() => toggleState(1)}
-                        >
-                            {ismentor ? "Reviewed" : "Submitted"}
-                        </button>
-                        <button 
-                            className={`rounded-full w-1/3 py-2 text-sm sm:text-lg md:text-xl lg:text-2xl transition-colors ${toggles[2] ? "bg-primary-yellow text-black" : "bg-deeper-grey"}`} 
-                            onClick={() => toggleState(2)}
-                        >
-                            {ismentor ? "Submitted " : "Reviewed"}
-                        </button>
-                    </div>
-                    <div className="w-[95%] sm:w-[85%] md:w-[80%] mt-7 h-[72vh] overflow-scroll scrollbar-hide px-5 m-auto">
-                        <TasksViewer 
-                            isMentor={ismentor}
-                            highted_task={CurrentTaskIndex} 
-                            tasks={toggledTasks} 
-                            mentees={getFilteredMentees()}
-                            onTaskClick={handleTaskClick}
-                            onMenteeClick={handleMenteeClick}
-                        />
-                    </div>
-                </>
-            )}
-        </div>
-    );
+                {/* Tasks List Container */}
+                <div className="w-full max-w-[75%] mx-auto h-[65vh] overflow-y-auto scrollbar-hide px-2">
+                    <TasksViewer 
+                        isMentor={ismentor}
+                        highted_task={CurrentTaskIndex} 
+                        tasks={toggledTasks} 
+                        mentees={getFilteredMentees()}
+                        onTaskClick={handleTaskClick}
+                        onMenteeClick={handleMenteeClick}
+                    />
+                </div>
+            </div>
+        )}
+    </div>
+);
 };
 
 export default TasksPageContent;

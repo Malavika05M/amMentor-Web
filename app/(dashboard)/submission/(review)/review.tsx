@@ -317,24 +317,31 @@ const SubmissionReview = ({
   }
 
   return (
-    <div className="max-w-[90rem] mx-auto">
-      <div className="bg-container-grey bg-opacity-50 rounded-3xl p-4 md:p-6 min-h-[800px] w-full relative">
+    <div className="max-w-[90rem] mx-auto p-4 md:p-8">
+      <div className="bg-[#0f1115] border border-gray-800 rounded-[2rem] p-4 md:p-8 min-h-[85vh] w-full relative shadow-2xl overflow-hidden">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary-yellow opacity-[0.07] rounded-full blur-[140px] -mr-64 -mt-64 pointer-events-none mix-blend-screen"></div>
+        <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-orange-500 opacity-[0.05] rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none mix-blend-screen"></div>
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 bg-primary-yellow rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center"
+          className="absolute top-6 right-6 bg-primary-yellow hover:scale-105 transition-transform rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center z-10 shadow-[0_0_20px_rgba(255,193,7,0.4)]"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5 md:h-6 md:w-6 text-black"
-            fill="none"
             viewBox="0 0 24 24"
+            fill="none"
             stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </button>
 
-        <div className="flex flex-col md:flex-row px-4 md:px-10">
+        {/* Main Content Layout */}
+        <div className="flex flex-col md:flex-row gap-4 mt-4">
           <TaskDetails
             isMentor={isMentor}
             taskId={taskId ?? undefined}
@@ -362,7 +369,7 @@ const SubmissionReview = ({
         </div>
       </div>
     </div>
-  );
+);
 };
 
 export default SubmissionReview;
