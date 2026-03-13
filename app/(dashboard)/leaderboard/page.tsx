@@ -293,7 +293,7 @@ const LeaderBoardPage = () => {
 
   return (
     <div className="max-h-screen">
-      <div className="rounded-lg max-w-[90rem] mx-auto">
+      <div className="rounded-lg max-w-[80rem] mx-auto">
         <div className="bg-container-grey bg-opacity-50 rounded-3xl p-6 min-h-[800px] w-full">
           <div className="mb-6 px-12 py-4">
             <div className="flex justify-between items-center">
