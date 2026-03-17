@@ -205,168 +205,147 @@ const TaskDetails = ({
   }
 
   return (
-     <div className="w-full md:w-2/3 md:pr-8 mb-6 md:mb-0">
-      <div className="mb-4 md:mb-6 px-4 md:px-0 py-2 md:py-4">
-        <div className="flex-1 max-w-full md:max-w-[70%]">
-          <h2 className="text-xl md:text-2xl font-bold text-white-text">
-            {task?.title || 'TASK NAME'}
-          </h2>
-          <p className="text-gray-400">TASK - {task ? (task.task_no + 1) : 'XX'}</p>
-          {task?.deadline === 0 && (
-            <p className="text-green-400 text-sm">📅 No deadline - Next task automatically unlocked</p>
-          )}
-          {task?.deadline !== 0 && task?.deadline && (
-            <p className="text-yellow-400 text-sm">📅 Deadline: {task.deadline} days</p>
-          )}
-          {startDate && (
-            <p className="text-blue-400 text-sm">🚀 Started: {new Date(startDate).toLocaleDateString()}</p>
-          )}
-          {isMentor && menteeId && (
-            <p className="text-primary-yellow font-semibold mt-2">Mentee: {menteeId}</p>
-          )}
-          <p className="text-xs md:text-sm text-gray-300">
-            {task?.description || 'TASK DETAILS ...'}
-          </p>
-          
-          {/* Task Status and Lock Message */}
-          <div className="mt-3">
-            <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
-              taskStatus === 'Reviewed' ? 'bg-green-600 text-white' :
-              taskStatus === 'Submitted' ? 'bg-primary-yellow text-black' :
-              taskStatus === 'In Progress' ? 'bg-blue-600 text-white' :
-              showLockedMessage ? 'bg-red-600 text-white' :
-              'bg-gray-600 text-white'
-            }`}>
-              Status: {showLockedMessage ? 'Locked' : taskStatus}
-            </span>
-          </div>
-          
-          {/* Locked Task Message */}
-          {showLockedMessage && (
-            <div className="mt-3 p-3 bg-red-900 bg-opacity-50 border border-red-600 rounded-md">
-              <p className="text-red-300 text-sm">
-                🔒 {getBlockedTaskMessage(taskId || '1')}
-              </p>
+  <div className="w-full md:w-2/3 md:pr-8 mb-6 md:mb-0">
+    <div className="mb-4 md:mb-6 px-4 md:px-0 py-2 md:py-4">
+      <div className="flex-1 max-w-full">
+        <h2 className="text-2xl md:text-3xl font-bold text-white-text uppercase tracking-tight">
+          {task?.title || 'TASK NAME'}
+        </h2>
+        <p className="text-primary-yellow text-sm font-bold flex items-center gap-2 mt-1">
+          <span className="w-2 h-2 rounded-full bg-primary-yellow"></span>
+          TASK - {task ? (task.task_no + 1) : 'XX'}
+        </p>
+        
+        <p className="text-xs md:text-sm text-gray-300 mt-4 leading-relaxed">
+          <span className="font-bold">TASK DETAILS</span> {task?.description || 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s...'}
+        </p>
+        
+        <div className="border-t border-gray-700 mb-6 mt-6"></div>
+
+        {/* PROGRESS SECTION */}
+        <div className="mb-8">
+          <h3 className="text-sm font-bold text-white-text mb-4 flex items-center gap-2">
+            <span className="w-1 h-4 bg-primary-yellow"></span> PROGRESS
+          </h3>
+          <div className="relative pt-1">
+            <div className="flex mb-2 items-center justify-between text-xs text-gray-400">
+              <span>25 Days</span>
+              <span className="text-primary-yellow font-bold uppercase">5 Days Left</span>
+              <span>DEADLINE</span>
             </div>
-          )}
-          
-          <div className="border-t border-white mb-2 md:mb-4 mt-4"></div>
+            <div className="overflow-hidden h-2 mb-1 text-xs flex rounded bg-gray-700">
+              <div style={{ width: "83%" }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-primary-yellow relative">
+                 <div className="absolute right-0 w-3 h-3 bg-white border-2 border-primary-yellow rounded-full -mr-1"></div>
+              </div>
+            </div>
+            <div className="flex justify-between text-[10px] text-gray-500">
+              <span>Start</span>
+              <span>30 Days</span>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
 
-      {isMentor && (
-        <div className="mb-8 md:mb-10">
-          <div className="flex flex-col gap-2">
-            <div className="flex">
-              <span className="text-primary-yellow font-semibold">Starting Date: </span>
-              <span className="ml-2">{startDate ? new Date(startDate).toLocaleDateString() : 'Not provided'}</span>
-            </div>
-            {isAlreadySubmitted && (
-              <div className="flex">
-                <span className="text-primary-yellow font-semibold">Submitted Date: </span>
-                <span className="ml-2">04/05/2025</span>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+    <div className="mb-8 md:mb-10">
+      <h3 className="text-sm font-bold mb-4 text-white-text flex items-center gap-2">
+        <span className="w-1 h-4 bg-primary-yellow"></span> WORK SUBMISSION
+      </h3>
       
-      <div className="mb-8 md:mb-10">
-        <h2 className="font-bold mb-3 md:mb-4 text-white-text">WORK SUBMISSION</h2>
+      <div className="bg-[#1a1c20] bg-opacity-50 rounded-xl p-6 border border-gray-800 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-16 h-16 bg-gray-700 bg-opacity-20 rounded-bl-full"></div>
         
         {!isMentor ? (
           <>
-            {/* Use corrected canEdit logic and task unlock status */}
             {canEditTask ? (
               <>
-                {/* Start Date Input */}
                 <div className="mb-4">
-                  <label htmlFor="startDate" className="block text-sm font-semibold text-gray-300 mb-2">
-                    Task Start Date <span className="text-red-500">*</span>
+                  <label htmlFor="startDate" className="block text-xs font-bold text-gray-400 uppercase mb-2">
+                    Task Start Date
                   </label>
                   <input
                     type="date"
                     id="startDate"
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    max={new Date().toISOString().split('T')[0]}
-                    className="w-full bg-dark-grey rounded-md p-3 text-sm md:text-base text-white-text border border-gray-600 outline-none focus:border-primary-yellow"
+                    className="bg-transparent text-white-text border-b border-gray-600 focus:border-primary-yellow outline-none pb-1"
                   />
-                  <p className="text-xs text-gray-400 mt-1">
-                    Enter the date when you started working on this task
-                  </p>
                 </div>
 
                 <textarea
                   value={submissionText}
                   onChange={(e) => setSubmissionText(e.target.value)}
-                  placeholder="Submit your work link or description here... (e.g. https://github.com/yourname/task-solution)"
-                  className="w-full bg-dark-grey rounded-md p-3 md:p-4 min-h-[100px] md:min-h-[120px] text-sm md:text-base text-white-text mb-4 md:mb-6 resize-none border-none outline-none placeholder-gray-500"
+                  className="w-full bg-transparent text-sm md:text-base text-gray-300 mb-6 resize-none border-none outline-none leading-relaxed"
+                  placeholder="Enter your submission details..."
                 />
                 
                 <div className="flex justify-center">
                   <button 
-                    type="submit"
                     disabled={!submissionText.trim() || !startDate.trim()}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (submissionText.trim() && startDate.trim()) {
-                        handleSubmitTask();
-                      }
-                    }}
-                    className={`px-6 md:px-10 py-2 rounded-full text-sm md:text-md font-bold shadow-md ${
-                      !submissionText.trim() || !startDate.trim()
-                        ? "bg-gray-600 text-gray-400 cursor-not-allowed"
-                        : "bg-primary-yellow text-dark-bg hover:shadow-xl transition-shadow"
-                    }`}
+                    onClick={handleSubmitTask}
+                    className="px-8 py-2 rounded-full text-xs font-bold bg-primary-yellow text-dark-bg hover:brightness-110 transition-all uppercase tracking-wider"
                   >
                     SUBMIT TASK
                   </button>
                 </div>
               </>
-            ) : showLockedMessage ? (
-              // Show locked submission area
-              <div className="bg-gray-800 rounded-md p-3 md:p-4 min-h-[100px] md:min-h-[120px] text-sm md:text-base text-gray-500 mb-4 md:mb-6 border border-gray-600 relative">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-4xl mb-2">🔒</div>
-                    <p className="text-gray-400">Complete previous task to unlock</p>
-                  </div>
-                </div>
-              </div>
             ) : (
               <>
-                <div className="bg-dark-grey rounded-md p-3 md:p-4 min-h-[100px] md:min-h-[120px] text-sm md:text-base text-gray-300 mb-4 md:mb-6 border border-gray-600">
-                  {submissionText || "No submission yet"}
-                </div>
-                
-                {taskStatus === 'Submitted' && (
-                  <div className="text-center">
-                    <p className="text-primary-yellow font-semibold">
-                      ✅ Task submitted! Waiting for review.
-                    </p>
-                  </div>
-                )}
-                
-                {taskStatus === 'Reviewed' && (
-                  <div className="text-center">
-                    <p className="text-green-400 font-semibold">
-                      🎉 Task completed and reviewed!
-                    </p>
-                  </div>
-                )}
-              </>
+              <div className="text-sm text-gray-300 leading-relaxed mb-8">
+                {submissionText ? (submissionText.startsWith('http') ? (
+                  <a 
+                  href={submissionText} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-primary-yellow hover:underline break-all transition-all">
+                    {submissionText}
+                  </a>
+                ) : (
+                <p>{submissionText}</p>
+              )
+            ) : (
+            <p>Contrary to popular belief, Lorem Ipsum is not simply random text...</p>
             )}
+            </div>
+            <div className="flex justify-center">
+              <div className="flex items-center gap-2 px-8 py-2 rounded-full text-xs font-bold border border-primary-yellow border-opacity-30 bg-primary-yellow bg-opacity-10 text-primary-yellow uppercase tracking-widest">
+                <span className="text-[10px]">✔</span> SUBMITTED
+              </div>
+            </div>
+            </>
+          )}
           </>
-        ) : (
-          // Mentor view
-          <div className="bg-dark-grey rounded-md p-3 md:p-4 min-h-[100px] md:min-h-[120px] text-sm md:text-base text-white-text mb-4 md:mb-6">
-            {submissionText || "No submission from mentee yet"}
-          </div>
-        )}
+          ) : (
+            <div className="text-sm text-gray-300 leading-relaxed">
+              {submissionText && submissionText.startsWith('http') ? (
+                <a 
+                href={submissionText} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-primary-yellow hover:underline break-all transition-all">
+                  {submissionText}
+                </a>
+                ) : (
+                  submissionText || "No submission from mentee yet"
+                )}
+            </div>
+         )} 
       </div>
     </div>
-  );
+    {/* BADGES SECTION */}
+    <div className="mt-8">
+      <h3 className="text-sm font-bold text-white-text mb-4 flex items-center gap-2">
+        <span className="w-1 h-4 bg-primary-yellow"></span> BADGES EARNED
+      </h3>
+      <div className="bg-[#1a1c20] bg-opacity-50 rounded-xl p-4 border border-gray-800 flex gap-4">
+        <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-500 opacity-50">🔒</div>
+        <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-500 opacity-50">🔒</div>
+        <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-500 opacity-50">🔒</div>
+        <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-500 opacity-50">🔒</div>
+      </div>
+    </div>
+  </div>
+);
 };
 
 export default TaskDetails;
